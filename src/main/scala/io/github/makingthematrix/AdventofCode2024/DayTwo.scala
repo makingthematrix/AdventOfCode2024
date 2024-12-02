@@ -39,14 +39,21 @@ object DayTwo {
         }
   }
 
+  private def isSafeSimple(seq:Seq[Int], useDampener: Boolean): Boolean = {
+    val dir = signum(seq(1) - seq(0))
+    val check = seq.zip(seq.tail).forall((a, b) => a != b && signum(b - a) == dir && abs(b - a) <= 3)
+    if (check || !useDampener) check
+    else seq.indices.view.map(i => seq.take(i) ++ seq.drop(i + 1)).exists(isSafeSimple(_, false))
+  }
+
   @main def main(): Unit = {
     val seqs = readInput
     // Part 1
-    val res1 = seqs.count(isSafe(_, false))
+    val res1 = seqs.count(isSafeSimple(_, false))
     println(res1) // 220
 
     // Part 2
-    val res2 = seqs.count(isSafe(_, true))
+    val res2 = seqs.count(isSafeSimple(_, true))
     println(res2) // 296
   }
 }
