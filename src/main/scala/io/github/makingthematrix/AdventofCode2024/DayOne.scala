@@ -13,7 +13,7 @@ object DayOne {
     (pairs.map(_._1), pairs.map(_._2))
   }
 
-  @main def main(): Unit = {
+  def main(): Unit = {
     val (left, right) = readInput
     // Phase 1
     val phase1 = left.sorted.zip(right.sorted).map((a, b) => math.abs(a - b)).sum

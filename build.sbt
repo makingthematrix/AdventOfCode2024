@@ -22,7 +22,7 @@ val standardOptions = Seq(
 
 val scala3Options = Seq(
   "-explain",
-  "-Ysafe-init",
+  "-Wsafe-init",
   "-Ycheck-all-patmat",
   "-Wunused:imports"
 )
