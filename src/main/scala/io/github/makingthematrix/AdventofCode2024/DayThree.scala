@@ -5,7 +5,7 @@ import scala.util.matching.Regex
 
 object DayThree:
   private val mulPattern: Regex = """mul\((\d+),(\d+)\)""".r
-  private val allPattern: Regex = """(mul\((\d+),(\d+)\)|do\(\)|don\'t\(\))""".r
+  private val allPattern: Regex = """(mul\((\d+),(\d+)\)|do\(\)|don't\(\))""".r
 
   @main def main(): Unit =
     val input = Files.readString(Path.of("resources/input3"))
