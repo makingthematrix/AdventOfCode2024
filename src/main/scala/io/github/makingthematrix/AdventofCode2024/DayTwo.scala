@@ -14,7 +14,7 @@ object DayTwo:
     if (check || !useDampener) check
     else seq.indices.view.map(i => seq.take(i) ++ seq.drop(i + 1)).exists(isSafe(_, false))
 
-  @main def main(): Unit =
+  def main(): Unit =
     val seqs = readInput
     println(s"Part 1: ${seqs.count(isSafe(_, false))}") // 220
     println(s"Part 2: ${seqs.count(isSafe(_, true))}") // 296
