@@ -24,7 +24,6 @@
 *.sc
 *.worksheet*
 *projectFilesBackup/*
-*src/main/resources/evolution/*
 *contextMatrixTest*
 .cache-main
 .cache-tests
@@ -37,3 +36,5 @@
 *.bloop*
 *.metals*
 *.bsp
+
+*resources/*
