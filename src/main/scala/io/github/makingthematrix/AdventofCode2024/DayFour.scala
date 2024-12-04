@@ -1,17 +1,17 @@
 package io.github.makingthematrix.AdventofCode2024
 
-import java.nio.file.{Files, Path}
-import scala.jdk.CollectionConverters.*
+import io.github.makingthematrix.readLines
 
 object DayFour:
   private val XmasArray  = Array('X', 'M', 'A', 'S')
+  private val XMasRange  = 0 to 3
   private val Directions = for { x <- -1 to 1; y <- -1 to 1 if (x, y) != (0, 0) } yield (x, y)
 
   private def getChar(x: Int, y: Int)(using array: Array[Char], len: Int): Option[Char] =
     if x < 0 || y < 0 || x >= len || y >= len then None else Some(array(x * len + y))
 
   private def checkXMAS(x: Int, y: Int, dir: (Int, Int))(using input: Array[Char], len: Int): Boolean =
-    (0 to 3).forall { n => getChar(x + (n * dir._1), y + (n * dir._2)).contains(XmasArray(n)) }
+    XMasRange.forall { n => getChar(x + (n * dir._1), y + (n * dir._2)).contains(XmasArray(n)) }
 
   private def checkXMAS2(x: Int, y: Int)(using input: Array[Char], len: Int): Boolean = {
     for
@@ -24,7 +24,7 @@ object DayFour:
   }.getOrElse(false)
 
   @main def main(): Unit =
-    val lines                = Files.readAllLines(Path.of("resources/input4")).asScala.toSeq
+    val lines                = readLines("input4")
     given array: Array[Char] = lines.mkString.toCharArray
     given len: Int           = lines.head.length
     val range                = for { x <- 0 until len; y <- 0 until len } yield (x, y)

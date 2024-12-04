@@ -1,7 +1,6 @@
 package io.github.makingthematrix.AdventofCode2024
 
-import java.nio.file.{Files, Path}
-import scala.jdk.CollectionConverters.*
+import io.github.makingthematrix.readLines
 import math.{abs, signum}
 
 object DayTwo:
@@ -12,6 +11,6 @@ object DayTwo:
     else seq.indices.view.map(i => seq.take(i) ++ seq.drop(i + 1)).exists(isSafe(_, false))
 
   def main(): Unit =
-    val seqs = Files.readAllLines(Path.of("resources/input2")).asScala.toSeq.map { _.split(" ").toSeq.map(n => n.trim.toInt) }
+    val seqs = readLines("input2").map { _.split(" ").toSeq.map(n => n.trim.toInt) }
     println(s"Part 1: ${seqs.count(isSafe(_, false))}") // 220
     println(s"Part 2: ${seqs.count(isSafe(_, true))}") // 296

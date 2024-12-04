@@ -1,7 +1,6 @@
 package io.github.makingthematrix.AdventofCode2024
 
-import java.nio.file.{Files, Path}
-import scala.jdk.CollectionConverters.*
+import io.github.makingthematrix.readLines
 import scala.util.matching.Regex
 
 object DayOne:
@@ -9,7 +8,7 @@ object DayOne:
 
   def main(): Unit =
     val (left, right) = {
-      val pairs = Files.readAllLines(Path.of("resources/input1")).asScala.toSeq.collect { case abRegex(a, b) => (a.toInt, b.toInt) }
+      val pairs = readLines("input1").collect { case abRegex(a, b) => (a.toInt, b.toInt) }
       (pairs.map(_._1), pairs.map(_._2))
     }
     println(s"Phase 1: ${left.sorted.zip(right.sorted).map((a, b) => math.abs(a - b)).sum}")

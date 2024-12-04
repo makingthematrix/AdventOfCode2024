@@ -1,6 +1,6 @@
 package io.github.makingthematrix.AdventofCode2024
 
-import java.nio.file.{Files, Path}
+import io.github.makingthematrix.readString
 import scala.util.matching.Regex
 
 object DayThree:
@@ -8,7 +8,7 @@ object DayThree:
   private val allPattern: Regex = """(mul\((\d+),(\d+)\)|do\(\)|don't\(\))""".r
 
   def main(): Unit =
-    val input = Files.readString(Path.of("resources/input3"))
+    val input = readString("input3")
     // Part 1
     val res1 = mulPattern.findAllIn(input).collect { case mulPattern(a, b) => a.toInt * b.toInt }.sum
     println(res1) // 188192787
