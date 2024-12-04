@@ -6,7 +6,7 @@ import math.{abs, signum}
 
 object DayTwo:
   private def isSafe(seq:Seq[Int], useDampener: Boolean): Boolean =
-    val dir = signum(seq(1) - seq(0))
+    val dir   = signum(seq(1) - seq(0))
     val check = seq.zip(seq.tail).forall((a, b) => a != b && signum(b - a) == dir && abs(b - a) <= 3)
     if check || !useDampener then check
     else seq.indices.view.map(i => seq.take(i) ++ seq.drop(i + 1)).exists(isSafe(_, false))
