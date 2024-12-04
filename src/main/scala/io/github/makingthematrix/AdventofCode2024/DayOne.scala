@@ -12,4 +12,4 @@ object DayOne:
       (pairs.map(_._1), pairs.map(_._2))
     }
     println(s"Phase 1: ${left.sorted.zip(right.sorted).map((a, b) => math.abs(a - b)).sum}")
-    println(s"Phase 2: ${left.map { a => a * right.count(_ == a) }.sum}")
+    println(s"Phase 2: ${left.map(a => a * right.count(_ == a)).sum}")

@@ -23,7 +23,7 @@ object DayFour:
     yield true
   }.getOrElse(false)
 
-  @main def main(): Unit =
+  def main(): Unit =
     val lines                = readLines("input4")
     given array: Array[Char] = lines.mkString.toCharArray
     given len: Int           = lines.head.length
