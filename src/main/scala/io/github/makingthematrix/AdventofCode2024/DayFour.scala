@@ -17,9 +17,9 @@ object DayFour:
     for
       a  <- getChar(x, y)         if a == 'A'
       ul <- getChar(x - 1, y - 1) if ul == 'M' || ul == 'S'
+      dr <- getChar(x + 1, y + 1) if (ul == 'S' && dr == 'M') || (ul == 'M' && dr == 'S')
       ur <- getChar(x - 1, y + 1) if ur == 'M' || ur == 'S'
       dl <- getChar(x + 1, y - 1) if (ur == 'S' && dl == 'M') || (ur == 'M' && dl == 'S')
-      dr <- getChar(x + 1, y + 1) if (ul == 'S' && dr == 'M') || (ul == 'M' && dr == 'S')
     yield true
   }.getOrElse(false)
 
