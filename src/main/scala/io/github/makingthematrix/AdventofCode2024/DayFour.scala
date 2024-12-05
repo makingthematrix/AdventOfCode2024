@@ -30,8 +30,8 @@ object DayFour:
     // Part 1
     val range1               = for { x <- 0 until len; y <- 0 until len } yield (x, y)
     val res1                 = range1.map((x, y) => Directions.count(checkXMAS(x, y, _))).sum
-    println(res1) // 2344
+    println(s"Part 1: $res1") // 2344
     // Part 2
     val range2               = for { x <- 1 until len - 1; y <- 1 until len - 1 } yield (x, y)
     val res2                 = range2.count(checkXMAS2)
-    println(res2) // 1815
+    println(s"Part 2: $res2") // 1815

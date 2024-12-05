@@ -11,12 +11,11 @@ object DayThree:
     val input = readString("input3")
     // Part 1
     val res1 = mulPattern.findAllIn(input).collect { case mulPattern(a, b) => a.toInt * b.toInt }.sum
-    println(res1) // 188192787
+    println(s"Part 1: $res1") // 188192787
     // Part 2
-    val (_, res2) = allPattern.findAllIn(input).foldLeft((true, 0)) {
+    val (_, res2) = allPattern.findAllIn(input).foldLeft((true, 0)):
       case ((true, sum), mulPattern(a, b)) => (true, sum + (a.toInt * b.toInt))
       case ((_, sum), "don't()")           => (false, sum)
       case ((_, sum), "do()")              => (true, sum)
       case ((flag, sum), _)                => (flag, sum)
-    }
-    println(res2) // 113965544
+    println(s"Part 2: $res2") // 113965544

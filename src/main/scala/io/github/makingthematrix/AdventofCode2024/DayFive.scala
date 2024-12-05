@@ -13,7 +13,7 @@ object DayFive:
 
   private def sumMiddles(updates: Seq[Array[Int]]): Int = updates.map(update => update(update.length / 2)).sum
 
-  @main def main(): Unit =
+  def main(): Unit =
     val lines                      = readLines("input5")
     val rules                      = lines.takeWhile(_.nonEmpty).map(_.split("\\|")).collect { case Array(a, b) => (a.toInt, b.toInt) }
     given ruleSet: Set[(Int, Int)] = rules.toSet
