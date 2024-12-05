@@ -5,27 +5,25 @@ import scala.annotation.tailrec
 
 object DayFive:
   @main def main(): Unit =
-    val lines = readLines("input5_test")
+    val lines = readLines("input5")
     val rules = lines.takeWhile(_.nonEmpty).map { line =>
       val pair = line.split("\\|")
-      (pair(1).toInt, pair(0).toInt) // the swap here is on purpose
+      (pair(0).toInt, pair(1).toInt)
     }
-    val updates = lines.drop(rules.length + 1).map(_.split(",").map(_.toInt).toSeq)
 
-    val ruleSet = rules.toSet
-    val (correct, incorrect) = updates.partition {
-      update => update.view.zip(update.tail).forall { (a, b) => ruleSet.contains((b, a)) }
-    }
+    val ruleSet              = rules.toSet
+    val updates              = lines.drop(rules.length + 1).map(_.split(",").map(_.toInt))
+    val (correct, incorrect) = updates.partition(update => update.view.zip(update.tail).forall(ruleSet(_)))
 
     // Part 1
     val res1 = correct.map(update => update(update.length / 2)).sum
     println(res1) // 4872
 
     // Part 2
-    @tailrec def swap(update: Seq[Int], n: Int): Seq[Int] =
-      if (n == update.length - 1) update
-      else if (!ruleSet.contains(update(n), update(n + 1))) swap(update, n + 1)
-      else swap(update.take(n) ++ Seq(update(n + 1), update(n)) ++ update.drop(n + 2), if (n > 0) n - 1 else 1)
+    @tailrec def swap(update: Array[Int], n: Int = 0): Array[Int] =
+      if n == update.length - 1 then update
+      else if ruleSet((update(n), update(n + 1))) then swap(update, n + 1)
+      else swap(update.take(n) ++ Array(update(n + 1), update(n)) ++ update.drop(n + 2), if n > 0 then n - 1 else 1)
 
-    val res2 = incorrect.map(swap(_, 0)).map(update => update(update.length / 2)).sum
+    val res2 = incorrect.map(swap(_)).map(update => update(update.length / 2)).sum
     println(res2) // 5564
