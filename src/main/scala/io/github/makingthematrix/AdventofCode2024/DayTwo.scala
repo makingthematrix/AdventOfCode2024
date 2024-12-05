@@ -10,7 +10,7 @@ object DayTwo:
     if check || !useDampener then check
     else arr.indices.view.map(i => arr.take(i) ++ arr.drop(i + 1)).exists(isSafe(_, false))
 
-  @main def main(): Unit =
+  def main(): Unit =
     val seqs = readLines("input2").map(_.split(" ").map(_.toInt))
     println(s"Part 1: ${seqs.count(isSafe(_, false))}") // 220
     println(s"Part 2: ${seqs.count(isSafe(_, true))}") // 296
