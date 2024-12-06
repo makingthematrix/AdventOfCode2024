@@ -7,7 +7,7 @@ object DayFive:
 
   @main def main(): Unit =
     val lines       = readLines("input5")
-    val rules       = lines.takeWhile(_.nonEmpty).map(_.split("\\|")).collect { case Array(a, b) => (a.toInt, b.toInt) }
+    val rules       = lines.takeWhile(_.nonEmpty).collect { case s"$a|$b" => (a.toInt, b.toInt) }
     val ruleSet     = rules.toSet
     val updates     = lines.drop(rules.length + 1).map(_.split(",").map(_.toInt))
     val (good, bad) = updates.partition(update => update.view.zip(update.tail).forall(ruleSet))
