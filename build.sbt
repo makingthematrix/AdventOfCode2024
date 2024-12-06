@@ -1,9 +1,6 @@
-// based on http://caryrobbins.com/dev/sbt-publishing/
-
 val _scalaVersion = "3.5.2"
 
 organization := "io.github.makingthematrix"
-sonatypeProfileName := "io.github.makingthematrix"
 name := "AdventOfCode2024"
 licenses := Seq("MIT" -> url("https://www.gnu.org/licenses/mit.en.html"))
 ThisBuild / scalaVersion := _scalaVersion
@@ -39,10 +36,8 @@ lazy val root = (project in file("."))
   .settings(
     name := "AdventOfCode2024",
     libraryDependencies ++= Seq(
-      //Test dependencies
-      "org.scalameta" %% "munit" % "0.7.29" % "test"
+      "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
     ),
     scalacOptions ++= standardOptions ++ scala3Options
   )
 
-testFrameworks += new TestFramework("munit.Framework")
