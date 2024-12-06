@@ -1,14 +1,11 @@
 package io.github.makingthematrix.AdventofCode2024
 
-import io.github.makingthematrix.readLines
+import io.github.makingthematrix.{readLines, getChar}
 
 object DayFour:
   private val XMasArray  = Array('X', 'M', 'A', 'S')
   private val XMasRange  = 0 to 3
   private val Directions = for { x <- -1 to 1; y <- -1 to 1 if (x, y) != (0, 0) } yield (x, y)
-
-  private def getChar(x: Int, y: Int)(using array: Array[Char], len: Int): Option[Char] =
-    if x < 0 || y < 0 || x >= len || y >= len then None else Some(array(x * len + y))
 
   private def checkXMAS(x: Int, y: Int, dir: (Int, Int))(using input: Array[Char], len: Int): Boolean =
     XMasRange.forall(n => getChar(x + (n * dir._1), y + (n * dir._2)).contains(XMasArray(n)))
