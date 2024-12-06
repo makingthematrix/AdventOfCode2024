@@ -5,7 +5,7 @@ import io.github.makingthematrix.readLines
 object DayFive:
   private def sumMiddles(updates: Seq[Array[Int]]): Int = updates.map(update => update(update.length / 2)).sum
 
-  @main def main(): Unit =
+  def main(): Unit =
     val lines       = readLines("input5")
     val rules       = lines.takeWhile(_.nonEmpty).collect { case s"$a|$b" => (a.toInt, b.toInt) }
     val ruleSet     = rules.toSet
