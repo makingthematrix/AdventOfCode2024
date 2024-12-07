@@ -21,18 +21,20 @@ object DaySix:
       case None      => false
       case Some('.') => isInfiniteLoop(x + dir._1, y + dir._2, dir)
       case Some('4') => true
-      case Some(c)   => arr.update((x + dir._1) * len + y + dir._2, Marks(c)); isInfiniteLoop(x, y, (dir._2, -dir._1))
+      case Some(c)   =>
+        arr.update((x + dir._1) * len + y + dir._2, Marks(c))
+        isInfiniteLoop(x, y, (dir._2, -dir._1))
 
-  @main def main(): Unit =
-    val (array, len) = readLines("input6") match { case lines => (lines.mkString.toCharArray, lines.head.length) }
-    val start        = array.indexOf('^')
-    val t@(x, y)     = (start / len, start % len)
-    array.update(start, '.')
+  def main(): Unit =
+    val (array, len)              = readLines("input6") match { case lines => (lines.mkString.toCharArray, lines.head.length) }
+    val startIndex                = array.indexOf('^')
+    val startPos@(startX, startY) = (startIndex / len, startIndex % len)
+    array.update(startIndex, '.')
     // Part 1
-    val path = getPath(x, y)(using array, len)
+    val path = getPath(startX, startY)(using array, len)
     println(s"Part 1: ${path.size}") // 5329
     // Part 2
-    val res2 = (path - t).toArray.par
-      .map { (a, b) => array.updated(a * len + b, '#') }
-      .count { arr => isInfiniteLoop(x, y)(using arr, len) }
+    val res2 = (path - startPos).toArray.par
+      .map { (x, y) => array.updated(x * len + y, '#') }
+      .count { arr => isInfiniteLoop(startX, startY)(using arr, len) }
     println(s"Part 2: $res2") // 2162
