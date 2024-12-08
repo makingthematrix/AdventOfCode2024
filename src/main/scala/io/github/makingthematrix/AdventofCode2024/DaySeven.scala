@@ -28,7 +28,7 @@ object DaySeven:
       case line if line.isCalibrated(allOps) => line.testValue
     }.sum
 
-  @main def main(): Unit =
+  def main(): Unit =
     val lines = readLines("input7").collect {
       case s"$value: $numbers" => Line(value.toLong, numbers.split(' ').map(_.toLong))
     }
