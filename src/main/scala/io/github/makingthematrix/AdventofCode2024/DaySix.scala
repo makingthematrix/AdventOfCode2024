@@ -6,7 +6,7 @@ import scala.collection.parallel.CollectionConverters.*
 
 object DaySix:
   @tailrec private def getPath(pos: Pos, dir: Dir = Dir(-1, 0), uniques: Set[Pos] = Set.empty)
-                              (using arr: Array[Char], len: Int): Set[Pos] =
+                              (using array: Array[Char], len: Int): Set[Pos] =
     val updated = if pos.toChar.contains('.') then uniques + pos else uniques
     val newPos  = pos + dir
     newPos.toChar match
@@ -17,17 +17,17 @@ object DaySix:
   private val Marks = Map('#' -> '1', '1' -> '2', '2' -> '3', '3' -> '4')
 
   @tailrec private def isInfiniteLoop(pos: Pos, dir: Dir = Dir(-1, 0))
-                                     (using arr: Array[Char], len: Int): Boolean =
+                                     (using array: Array[Char], len: Int): Boolean =
     val newPos = pos + dir
     newPos.toChar match
       case None      => false
       case Some('.') => isInfiniteLoop(newPos, dir)
       case Some('4') => true
       case Some(c)   =>
-        arr.update((pos + dir).toIndex, Marks(c))
+        array.update((pos + dir).toIndex, Marks(c))
         isInfiniteLoop(pos, dir.turnRight)
 
-  @main def main(): Unit =
+  def main(): Unit =
     val lines = readLines("input6")
     given array: Array[Char] = lines.mkString.toCharArray
     given len: Int           = lines.head.length
