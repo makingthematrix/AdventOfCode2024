@@ -22,8 +22,10 @@ val scala3Options = Seq(
   "-Wsafe-init",
   "-Ycheck-all-patmat",
   "-Wunused:imports",
-  "-opt:inline,simplify-jumps,redundant-casts,box-unbox,nullness-tracking,closure-invocations,allow-skip-core-module-init,allow-skip-class-loading"
+  "-experimental"
 )
+
+// "-opt:inline,simplify-jumps,redundant-casts,box-unbox,nullness-tracking,closure-invocations,allow-skip-core-module-init,allow-skip-class-loading"
 
 developers := List(
   Developer(

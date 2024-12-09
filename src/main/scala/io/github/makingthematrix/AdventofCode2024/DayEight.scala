@@ -1,21 +1,22 @@
 package io.github.makingthematrix.AdventofCode2024
 
-import io.github.makingthematrix.readLines
+import scala.language.experimental.namedTuples
+import io.github.makingthematrix.{Dir, Pos, isValidPosition, readLines, toPos, add}
 
 object DayEight:
-  private def findAntennas(frequency: Char)(using array: Array[Char], len: Int): Array[(Int, Int)] =
-    array.zipWithIndex.collect { case (c, i) if c == frequency => (i / len, i % len) }
+  private def findAntennas(frequency: Char)(using array: Array[Char], len: Int): Array[Pos] =
+    array.zipWithIndex.collect { case (c, i) if c == frequency => toPos(i) }
 
-  private def getVector(a: (Int, Int), b: (Int, Int)): (Int, Int) = (b._1 - a._1, b._2 - a._2)
+  private inline def getVector(a: Pos, b: Pos): Dir = (b.x - a.x, b.y - a.y)
 
-  private def findAntinode(antenna: (Int, Int), vector: (Int, Int))(using len: Int): Option[(Int, Int)] =
-    val an = (antenna._1 + vector._1, antenna._2 + vector._2)
-    if (an._1 >= 0 && an._1 < len && an._2 >= 0 && an._2 < len) Some(an) else None
+  private def findAntinode(antenna: Pos, vector: Dir)(using len: Int): Option[Pos] =
+    val an = add(antenna, vector)
+    if isValidPosition(an) then Some(an) else None
 
-  private def findAntinodes(antenna: (Int, Int), vector: (Int, Int))(using len: Int): Vector[(Int, Int)] =
+  private def findAntinodes(antenna: Pos, vector: Dir)(using len: Int): Vector[Pos] =
     Vector.unfold(0) { n =>
-      val an = (antenna._1 + n * vector._1, antenna._2 + n * vector._2)
-      if (an._1 >= 0 && an._1 < len && an._2 >= 0 && an._2 < len) Some((an, n + 1)) else None
+      val an = add(antenna, vector, n)
+      if isValidPosition(an) then Some((an, n + 1)) else None
     }
 
   @main def main(): Unit =

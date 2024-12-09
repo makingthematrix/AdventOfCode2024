@@ -1,40 +1,44 @@
 package io.github.makingthematrix.AdventofCode2024
 
-import io.github.makingthematrix.{getChar, readLines}
+import scala.language.experimental.namedTuples
+import io.github.makingthematrix.{getChar, readLines, Pos, Dir, add, toIndex, toPos}
 import scala.annotation.tailrec
 import scala.collection.parallel.CollectionConverters.*
 
 object DaySix:
-  @tailrec private def getPath(x: Int, y: Int, dir: (Int, Int) = (-1, 0), uniques: Set[(Int, Int)] = Set.empty)
-                              (using arr: Array[Char], len: Int): Set[(Int, Int)] =
-    val updated = if getChar(x, y).contains('.') then uniques + ((x, y)) else uniques
-    getChar(x + dir._1, y + dir._2) match
+  @tailrec private def getPath(pos: Pos, dir: Dir = (-1, 0), uniques: Set[Pos] = Set.empty)
+                              (using arr: Array[Char], len: Int): Set[Pos] =
+    val updated = if getChar(pos).contains('.') then uniques + pos else uniques
+    getChar(add(pos, dir)) match
       case None      => updated
-      case Some('.') => getPath(x + dir._1, y + dir._2, dir, updated)
-      case Some('#') => getPath(x, y, (dir._2, -dir._1), updated)
+      case Some('.') => getPath(add(pos, dir), dir, updated)
+      case Some(_)   => getPath(pos, (x = dir.y, y = -dir.x), updated)
 
   private val Marks = Map('#' -> '1', '1' -> '2', '2' -> '3', '3' -> '4')
 
-  @tailrec private def isInfiniteLoop(x: Int, y: Int, dir: (Int, Int) = (-1, 0))
+  @tailrec private def isInfiniteLoop(pos: Pos, dir: Dir = (-1, 0))
                                      (using arr: Array[Char], len: Int): Boolean =
-    getChar(x + dir._1, y + dir._2) match
+    val newPos = add(pos, dir)
+    getChar(newPos) match
       case None      => false
-      case Some('.') => isInfiniteLoop(x + dir._1, y + dir._2, dir)
+      case Some('.') => isInfiniteLoop(newPos, dir)
       case Some('4') => true
       case Some(c)   =>
-        arr.update((x + dir._1) * len + y + dir._2, Marks(c))
-        isInfiniteLoop(x, y, (dir._2, -dir._1))
+        arr.update(toIndex(add(pos, dir)), Marks(c))
+        isInfiniteLoop(pos, (x = dir.y, y = -dir.x))
 
   def main(): Unit =
-    val (array, len)              = readLines("input6") match { case lines => (lines.mkString.toCharArray, lines.head.length) }
-    val startIndex                = array.indexOf('^')
-    val startPos@(startX, startY) = (startIndex / len, startIndex % len)
+    val lines = readLines("input6")
+    given array: Array[Char] = lines.mkString.toCharArray
+    given len: Int           = lines.head.length
+    val startIndex           = array.indexOf('^')
+    val startPos             = toPos(startIndex)
     array.update(startIndex, '.')
     // Part 1
-    val path = getPath(startX, startY)(using array, len)
+    val path = getPath(startPos)
     println(s"Part 1: ${path.size}") // 5329
     // Part 2
     val res2 = (path - startPos).toArray.par
-      .map { (x, y) => array.updated(x * len + y, '#') }
-      .count { arr => isInfiniteLoop(startX, startY)(using arr, len) }
+      .map { pos => array.updated(toIndex(pos), '#') }
+      .count { arr => isInfiniteLoop(startPos)(using arr, len) }
     println(s"Part 2: $res2") // 2162
