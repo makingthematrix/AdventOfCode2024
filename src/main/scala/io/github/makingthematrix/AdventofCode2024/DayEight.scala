@@ -19,14 +19,19 @@ object DayEight:
     }
 
   @main def main(): Unit =
-    val (array, len) = readLines("input8") match { case lines => (lines.mkString.toCharArray, lines.head.length) }
-    val frequencies  = array.toSet - '.'
-    val allAntennas  = frequencies.toSeq.map { findAntennas(_, array, len) }
-    val allPairs     = allAntennas.map { _.combinations(2).map(seq => (seq(0), seq(1))).toSeq }
-    val allVectors   = allPairs.map { _.flatMap((a, b) => Seq(b -> getVector(a, b), a -> getVector(b, a))) }
+    val (array, len)        = readLines("input8") match { case lines => (lines.mkString.toCharArray, lines.head.length) }
+    val frequencies         = array.toSet - '.'
+    val allAntennas         = frequencies.toSeq.map { findAntennas(_, array, len) }
+    val allPairs            = allAntennas.map { _.combinations(2).map(seq => (seq(0), seq(1))).toSeq }
+    val antennasWithVectors =
+      for
+        pairs             <- allPairs
+        (a, b)            <- pairs
+        (antenna, vector) <- Seq(b -> getVector(a, b), a -> getVector(b, a))
+      yield (antenna, vector)
     // Part 1
-    val res1 = for { vectors <- allVectors; (a, v) <- vectors; node <- findAntinode(a, v, len) } yield node
+    val res1 = for { (a, v) <- antennasWithVectors; node <- findAntinode(a, v, len) } yield node
     println(s"Part 1: ${res1.distinct.size}") // 271
     //Part 2
-    val res2 = for { vectors <- allVectors; (a, v) <- vectors; nodes <- findAntinodes(a, v, len) } yield nodes
+    val res2 = for { (a, v) <- antennasWithVectors; nodes <- findAntinodes(a, v, len) } yield nodes
     println(s"Part 2: ${res2.distinct.size}") // 994
