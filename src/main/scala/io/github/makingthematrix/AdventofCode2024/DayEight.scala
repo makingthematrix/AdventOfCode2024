@@ -1,25 +1,24 @@
 package io.github.makingthematrix.AdventofCode2024
 
-import scala.language.experimental.namedTuples
-import io.github.makingthematrix.{Dir, Pos, isValidPosition, readLines, toPos, add}
+import io.github.makingthematrix.{Dir, Pos, readLines}
 
 object DayEight:
   private def findAntennas(frequency: Char)(using array: Array[Char], len: Int): Array[Pos] =
-    array.zipWithIndex.collect { case (c, i) if c == frequency => toPos(i) }
+    array.zipWithIndex.collect { case (c, i) if c == frequency => Pos.fromIndex(i) }
 
-  private inline def getVector(a: Pos, b: Pos): Dir = (b.x - a.x, b.y - a.y)
+  private inline def getVector(a: Pos, b: Pos): Dir = Dir(b.x - a.x, b.y - a.y)
 
   private def findAntinode(antenna: Pos, vector: Dir)(using len: Int): Option[Pos] =
-    val an = add(antenna, vector)
-    if isValidPosition(an) then Some(an) else None
+    val an = antenna + vector
+    if an.isValid then Some(an) else None
 
   private def findAntinodes(antenna: Pos, vector: Dir)(using len: Int): Vector[Pos] =
     Vector.unfold(0) { n =>
-      val an = add(antenna, vector, n)
-      if isValidPosition(an) then Some((an, n + 1)) else None
+      val an = antenna + (vector * n)
+      if an.isValid then Some((an, n + 1)) else None
     }
 
-  @main def main(): Unit =
+  def main(): Unit =
     val lines                = readLines("input8")
     given array: Array[Char] = lines.mkString.toCharArray
     given len: Int           = lines.head.length
