@@ -24,4 +24,6 @@ final case class  Dir(x: Int, y: Int):
 inline def getChar(x: Int, y: Int)(using arr: Array[Char], len: Int): Option[Char] =
   if x < 0 || y < 0 || x >= len || y >= len then None else Some(arr(x * len + y))
 
+inline def getChar(pos: Pos)(using arr: Array[Char], len: Int): Option[Char] = getChar(pos.x, pos.y)
+
 def printBoard(using arr: Array[Char], len: Int): Unit = arr.grouped(len).foreach(line => println(line.mkString))

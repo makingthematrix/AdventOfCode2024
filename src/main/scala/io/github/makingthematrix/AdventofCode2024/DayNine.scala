@@ -5,7 +5,7 @@ import scala.annotation.tailrec
 import scala.collection.mutable
 
 object DayNine:
-  @main def main(): Unit =
+  def main(): Unit =
     val disk = readString("input9").toCharArray.map(_.toInt - 48)
     val skipFirst = disk.head
     val expanded = expand(disk.tail)
