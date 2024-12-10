@@ -56,6 +56,18 @@ object DayNine:
     inline def isFree: Boolean = n == 0
     def sum(fromIndex: Long): Long = (0 until length).map(i => (fromIndex + i.toLong) * n.toLong).sum
 
+  private def defragment2(expanded: Array[Int]): Array[Fragment] =
+    val fragments = expanded.foldLeft(List.empty[Fragment]) {
+      case (head :: tail, n) if n == head.n => Fragment(n, head.length + 1) :: tail
+      case (acc, n) => Fragment(n, 1) :: acc
+    }.reverse.toArray
+    defrag(fragments)
+
+  private def sumUp2(fragments: Array[Fragment], skipFirst: Int): Long =
+    fragments.foldLeft((0L, skipFirst.toLong)) {
+      case ((sum, index), fragment) => (sum + fragment.sum(index), index + fragment.length)
+    }._1
+
   private def findFirstFree(array: Array[Fragment], from: Int): Option[(Int, Int)] =
     (from until array.length)
       .view
@@ -89,23 +101,8 @@ object DayNine:
       case Some(i, freeLength) =>
         findLastMatching(array, i, freeLength) match
           case None => defrag(array, i + 1)
-          case Some((j, fragment)) =>
+          case Some(j, fragment) =>
             val newArray =
               if fragment.length == freeLength then swapInPlace(array, fragment, i, j)
               else swap(array, fragment, i, j, freeLength)
             defrag(newArray, i + 1)
-
-  private def defragment2(expanded: Array[Int]): Array[Fragment] =
-    val fragments = expanded.foldLeft(List.empty[Fragment]) {
-      case (Nil, n)                         => List(Fragment(n, 1))
-      case (head :: tail, n) if head.n == n => Fragment(n, head.length + 1) ::tail
-      case (acc, n)                         => Fragment(n, 1) :: acc
-    }.reverse.toArray
-    defrag(fragments)
-
-  private def sumUp2(fragments: Array[Fragment], skipFirst: Int): Long =
-    fragments.foldLeft((0L, skipFirst.toLong)) { case ((sum, index), fragment) =>
-      val newSum = sum + fragment.sum(index)
-      val newIndex = index + fragment.length
-      (newSum, newIndex)
-    }._1
