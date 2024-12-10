@@ -10,21 +10,14 @@ object DayTen:
     given array: Array[Char] = lines.mkString.toCharArray
     given len: Int           = lines.head.length
     val trailheads           = array.zipWithIndex.collect { case (c, index) if c == '0' => Pos.fromIndex(index) }
+    val trailResults         = trailheads.map(trail(_))
     // Part 1
-    val res1 = trailheads.map(trail1(_).size).sum
-    println(s"Part 1: $res1") // 776
+    println(s"Part 1: ${trailResults.map(_.distinct.size).sum}") // 776
     // Part 2
-    val res2 = trailheads.map(trail2(_)).sum
-    println(s"Part 2: $res2") // 1657
+    println(s"Part 2: ${trailResults.map(_.size).sum}") // 1657
 
-  private def trail1(pos: Pos, lastChar: Char = ('0' - 1).toChar)(using array: Array[Char], len: Int): Set[Pos] = getChar(pos) match
-    case None                         => Set.empty
-    case Some(c) if c - lastChar != 1 => Set.empty
-    case Some('9')                    => Set(pos)
-    case Some(c)                      => Directions.map(dir => trail1(pos + dir, c)).reduce(_ ++ _)
-
-  private def trail2(pos: Pos, lastChar: Char = ('0' - 1).toChar)(using array: Array[Char], len: Int): Int = getChar(pos) match
-    case None                         => 0
-    case Some(c) if c - lastChar != 1 => 0
-    case Some('9')                    => 1
-    case Some(c)                      => Directions.map(dir => trail2(pos + dir, c)).sum
+  private def trail(pos: Pos, prev: Char = ('0' - 1).toChar)(using array: Array[Char], len: Int): List[Pos] = getChar(pos) match
+    case None                     => Nil
+    case Some(c) if c - prev != 1 => Nil
+    case Some('9')                => List(pos)
+    case Some(c)                  => Directions.map(dir => trail(pos + dir, c)).reduce(_ ++ _)
