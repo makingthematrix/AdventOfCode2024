@@ -5,7 +5,7 @@ import io.github.makingthematrix.{Dir, Pos, readLines, getChar}
 object DayTen:
   private val Directions: Array[Dir] = Array(Dir(-1, 0), Dir(1, 0), Dir(0, -1), Dir(0, 1))
 
-  @main def main(): Unit =
+  def main(): Unit =
     val lines                = readLines("input10")
     given array: Array[Char] = lines.mkString.toCharArray
     given len: Int           = lines.head.length
