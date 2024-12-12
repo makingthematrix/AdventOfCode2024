@@ -1,4 +1,4 @@
-val _scalaVersion = "3.5.2"
+val _scalaVersion = "3.6.2"
 
 organization := "io.github.makingthematrix"
 name := "AdventOfCode2024"

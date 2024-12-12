@@ -5,6 +5,8 @@ package object AdventofCode2024
 import java.nio.file.{Files, Path}
 import scala.jdk.CollectionConverters.*
 
+val Directions: Array[Dir] = Array(Dir(-1, 0), Dir(1, 0), Dir(0, -1), Dir(0, 1))
+
 inline def readLines(fileName: String): Seq[String] = Files.readAllLines(Path.of(s"resources/$fileName")).asScala.toSeq
 inline def readString(fileName: String): String = Files.readString(Path.of(s"resources/$fileName"))
 

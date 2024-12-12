@@ -4,7 +4,7 @@ import io.github.makingthematrix.readString
 import scala.collection.mutable.HashMap
 
 object DayEleven:
-  @main def main(): Unit =
+  def main(): Unit =
     val numbers = readString("input11").split(" ").map(_.toLong)
     // Part 1
     val res1 = numbers.map(blink(_, 25)).sum

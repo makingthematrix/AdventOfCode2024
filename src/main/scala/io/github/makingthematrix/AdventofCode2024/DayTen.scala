@@ -1,10 +1,8 @@
 package io.github.makingthematrix.AdventofCode2024
 
-import io.github.makingthematrix.{Dir, Pos, readLines, getChar}
+import io.github.makingthematrix.{Dir, Pos, readLines, getChar, Directions}
 
 object DayTen:
-  private val Directions: Array[Dir] = Array(Dir(-1, 0), Dir(1, 0), Dir(0, -1), Dir(0, 1))
-
   def main(): Unit =
     val lines                = readLines("input10")
     given array: Array[Char] = lines.mkString.toCharArray
