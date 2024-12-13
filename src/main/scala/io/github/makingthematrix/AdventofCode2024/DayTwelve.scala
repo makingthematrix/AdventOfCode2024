@@ -20,19 +20,19 @@ object DayTwelve:
     }.sum
     println(s"Part 2: $res2") // 811148
 
-  private def markRegion(from: Char)(using array: Array[Char], len: Int): Array[Char] =
-    def go(pos: Pos, newArray: Array[Char] = Array.fill(array.length)('.')): Array[Char] =
+  private def calculateRegions(using array: Array[Char], len: Int): Seq[Array[Char]] =
+    def go(pos: Pos, newArray: Array[Char] = Array.fill(array.length)('.'))(using from: Char): Array[Char] =
       if (getChar(pos).contains(from))
         newArray.update(pos.toIndex, '#')
         array.update(pos.toIndex, '.')
         Directions.foreach(dir => go(pos + dir, newArray))
       newArray
-    go(Pos.fromIndex(array.indexWhere(_ == from)))
-
-  private def calculateRegions(using array: Array[Char], len: Int): Seq[Array[Char]] =
+    
     val buf = ArrayBuffer[Array[Char]]()
-    while array.exists(_ != '.') do
-      buf.addOne(markRegion(array.find(_ != '.').get))
+    while array.exists(_ != '.') do {
+      val (from, index) = array.zipWithIndex.find ((c, _) => c != '.').get
+      buf.addOne(go(Pos.fromIndex(index))(using from))
+    }
     buf.toSeq
 
   private def calculatePerimeter(using array: Array[Char], len: Int): Int =
@@ -41,18 +41,17 @@ object DayTwelve:
       .collect { case ('#', i) => Pos.fromIndex(i) }
       .map { pos => Directions.count { dir => !getChar(pos + dir).contains('#') } }.sum
 
-  private val dirs = Seq(Dir(0, 0), Dir(0, 1), Dir(1, 0), Dir(1, 1))
-  private val diagonals = Seq(Seq(Dir(0, 0), Dir(1, 1)), Seq(Dir(0, 1), Dir(1, 0)))
+  private val dirs = Array(Dir(0, 0), Dir(0, 1), Dir(1, 0), Dir(1, 1))
 
   private def calculateSides(using array: Array[Char], len: Int): Int =
     (for
-       x <- -1 until len
-       y <- -1 until len
-       pos = Pos(x, y)
-       count = dirs.count { dir => getChar(pos + dir).contains('#') }
+       x     <- -1 until len
+       y     <- -1 until len
+       pos   =  Pos(x, y)
+       count =  dirs.count { dir => getChar(pos + dir).contains('#') }
      yield
        if count == 0 || count == 4 then 0
        else if count == 1 || count == 3 then 1
-       else if diagonals.exists(_.forall(dir => getChar(pos + dir).contains('#'))) then 2
+       else if getChar(pos) == getChar(pos + dirs(3)) && getChar(pos + dirs(1)) == getChar(pos + dirs(2)) then 2
        else 0
     ).sum
