@@ -15,6 +15,7 @@ final case class Pos(x: Int, y: Int):
   inline def isValid(using len: Int): Boolean = x >= 0 && x < len && y >= 0 && y < len
   inline def toIndex(using len: Int): Int = x * len + y
   inline def +(dir: Dir): Pos = Pos(x + dir.x, y + dir.y)
+  inline def -(dir: Dir): Pos = Pos(x - dir.x, y - dir.y)
 
 object Pos:
   inline def fromIndex(index: Int)(using len: Int): Pos = new Pos(index / len, index % len)
